@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import {BsFillHeartFill} from  "react-icons/bs";
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
+import { addToFavouritesAction, ADD_TO_FAVOURITES, removeFromFavouritesAction, REMOVE_FROM_FAVOURITES } from '../redux/actions';
 
 const Job = ({ data }) => {
 
@@ -19,16 +20,10 @@ const Job = ({ data }) => {
         
       <BsFillHeartFill className='mx-2' color={dataStore?.find(dato=> dato._id === data._id) ? 'red': 'black'} onClick={()=>{
         if(dataStore?.find(dato=> dato._id === data._id)){
-          dispatch({
-            type: 'REMOVE_FROM_FAVOURITES',
-            payload: data._id,
-          })
+          dispatch(removeFromFavouritesAction(data._id))
         }
         else{
-          dispatch({
-          type: 'ADD_TO_FAVOURITES',
-          payload: data,
-        })
+          dispatch(addToFavouritesAction(data))
         }
          
       }}/>

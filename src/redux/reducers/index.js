@@ -2,6 +2,8 @@
 // il reducer prende lo stato attuale dell'app, controlla l'azione che è
 // stata appena dispatchata e genere il nuovo stato dell'applicativo
 
+import { ADD_TO_FAVOURITES, REMOVE_FROM_FAVOURITES } from "../actions"
+
 // ma da dove cominciamo? qual è lo stato iniziale?
 
 const initialState = {
@@ -18,7 +20,7 @@ const mainReducer = (state = initialState, action) => {
   // io devo restituire il NUOVO STATO dell'applicativo
   switch (action.type) {
       
-    case 'ADD_TO_FAVOURITES':
+    case ADD_TO_FAVOURITES:
       return{
         ...state,
         favourites:{
@@ -27,7 +29,7 @@ const mainReducer = (state = initialState, action) => {
         }
       }
 
-      case 'REMOVE_FROM_FAVOURITES':
+      case REMOVE_FROM_FAVOURITES:
         return{
           ...state,
           favourites:{

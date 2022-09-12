@@ -1,44 +1,35 @@
-import { useState } from 'react'
-import { Container, Row, Col, Form, Button } from 'react-bootstrap'
-import Job from './Job'
-import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useState } from "react";
+import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import Job from "./Job";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { getJobsAction } from "../redux/actions";
 
 const MainSearch = () => {
   const navigate = useNavigate();
-  const favLength = useSelector((state) => state.favourites.content.length)
-  const [query, setQuery] = useState('')
-  const [jobs, setJobs] = useState([])
+  const jobsStore = useSelector((state) => state.search.content);
+  const favLength = useSelector((state) => state.favourites.content.length);
+  const [query, setQuery] = useState("");
+  const dispatch = useDispatch()
 
-  const baseEndpoint = 'https://strive-jobs-api.herokuapp.com/jobs?search='
 
   const handleChange = (e) => {
-    setQuery(e.target.value)
-  }
+    setQuery(e.target.value);
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-
-    try {
-      const response = await fetch(baseEndpoint + query + '&limit=20')
-      if (response.ok) {
-        const { data } = await response.json()
-        setJobs(data)
-      } else {
-        alert('Error fetching results')
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
+    e.preventDefault();
+    dispatch(getJobsAction(query));
+  };
 
   return (
     <Container>
       <Row>
         <Col xs={10} className="mx-auto my-3">
           <h1>Remote Jobs Search</h1>
-          <Button variant='primary' onClick={()=>navigate('/favourites')}>Favourites
-          <span className="ml-2">{favLength}</span>
+          <Button variant="primary" onClick={() => navigate("/favourites")}>
+            Favourites
+            <span className="ml-2">{favLength}</span>
           </Button>
         </Col>
         <Col xs={10} className="mx-auto">
@@ -52,13 +43,13 @@ const MainSearch = () => {
           </Form>
         </Col>
         <Col xs={10} className="mx-auto mb-5">
-          {jobs.map((jobData) => (
+          {jobsStore.map((jobData) => (
             <Job key={jobData._id} data={jobData} />
           ))}
         </Col>
       </Row>
     </Container>
-  )
-}
+  );
+};
 
-export default MainSearch
+export default MainSearch;
